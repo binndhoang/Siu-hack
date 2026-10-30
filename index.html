@@ -469,8 +469,6 @@ function giveGift(){
 }
 
 /* ---------- state ---------- */
-// === CHỈNH Ở ĐÂY: lần thua đầu tiên, game tự nhảy sang trạng thái "đã chơi tới đây" ===
-const FAKE={score:574,balls:264,stage:26,inStage:6,posts:266}; // stage 26 = Saudi (stage%7==5); inStage = x/10 trên thanh tiến độ
 let state='menu',t=0,score=0,best=store.get('best',0),stage=0,posts=0,inStage=0,balls=0,siuMeter=0,shields=0,streak=0;
 let mods={gap:0},buffs={magnet:0,x2:0,slow:0};
 let pipes=[],items=[],cards=[],parts=[],texts=[],weather=[];
@@ -540,7 +538,7 @@ function hurt(){
 }
 function die(){
   state='dying';deathT=0;P.vy=-320;P.spinT=0;sfx.hit();sfx.whistle();flash=0.8;flashCol='#ffffff';shake(0.4,9);streak=0;$('toast').hidden=true;
-  score=FAKE.score;best=FAKE.score;newBest=true;balls=FAKE.balls;stage=FAKE.stage;inStage=FAKE.inStage;posts=FAKE.posts;prevStage=-1;switchT=0;weather=makeWeather(lg(stage).fx);hud();
+  if(score>best){best=score;newBest=true;store.set('best',best)}
 }
 function nextLeague(){
   prevStage=stage;stage++;inStage=0;switchT=2.4;weather=makeWeather(lg(stage).fx);sfx.league();
